@@ -473,4 +473,9 @@ public class FontRenderer {
     public float getSplitWidth(final String str, final int length) {
         return getHeight() * this.listFormattedStringToWidth(str, length).size();
     }
+
+    private int ceilDI(final double value) {
+        final int i = (int)value;
+        return value > (double)i ? i + 1 : i;
+    }
 }

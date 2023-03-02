@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="DDMinecraftFontRenderer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/DDMinecraftFontRenderer_jar</output-path>
+    <root id="archive" name="DDMinecraftFontRenderer.jar">
+      <element id="module-output" name="DDMinecraftFontRenderer" />
+    </root>
+  </artifact>
+</component>

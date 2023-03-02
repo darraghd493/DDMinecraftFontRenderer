@@ -31,7 +31,7 @@ public class FontManager {
         } else {
             try {
                 try {
-                    final InputStream inputStream = this.getClass().getResourceAsStream(String.format("/assets/minecraft/%s/fonts/%s.ttf", domain, name));
+                    final InputStream inputStream = this.getClass().getResourceAsStream(String.format("/assets/minecraft/%s/%s.ttf", domain, name));
                     this.generateFont(name, inputStream, size);
                     logger.info("Generated font " + name + " with size " + size + "!");
 

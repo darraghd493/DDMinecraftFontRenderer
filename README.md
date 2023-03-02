@@ -4,7 +4,7 @@ A custom Minecraft font renderer based upon an old font renderer.
 ## Usage
 ```java
 // Creating a font manager
-FontManager fontManager = new FontManager("Client"); // Create a new font manager, this will get resources out of the "Client" domain in /assets/minecraft/
+FontManager fontManager = new FontManager("Client/fonts"); // Create a new font manager, this will get the fonts out of the folder "fonts" in "Client in /assets/minecraft/
 FontRenderer font = fontManager.getFont("Arial", 20); // Get a font with the name "Arial" and a size of 20
 
 // Drawing a string

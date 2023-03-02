@@ -1,11 +1,10 @@
-package pro.dd493.font;
+package pro.dd493.minecraftfontrenderer;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.MathHelper;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
-import teddy.cosmic.util.render.RenderUtil;
+import pro.dd493.minecraftfontrenderer.util.ColourUtil;
+import pro.dd493.minecraftfontrenderer.util.RenderUtil;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -69,7 +68,7 @@ public class FontRenderer {
             final float width = (float) characterBounds.getWidth() + (2 * MARGIN);
             final float height = (float) characterBounds.getHeight();
 
-            final BufferedImage characterImage = new BufferedImage(MathHelper.ceiling_double_int(width), MathHelper.ceiling_double_int(height), BufferedImage.TYPE_INT_ARGB);
+            final BufferedImage characterImage = new BufferedImage(ceilDI(width), ceilDI(height), BufferedImage.TYPE_INT_ARGB);
 
             final Graphics2D graphics = (Graphics2D) characterImage.getGraphics();
             graphics.setFont(font);
@@ -84,7 +83,7 @@ public class FontRenderer {
 
             graphics.drawString(character + "", MARGIN, fontMetrics.getAscent());
 
-            final int textureId = GlStateManager.generateTexture();
+            final int textureId = GL11.glGenTextures();
 
             createTexture(textureId, characterImage);
             characterData[index] = new CharacterData(character, characterImage.getWidth(), characterImage.getHeight(), textureId);
@@ -113,12 +112,12 @@ public class FontRenderer {
 
         buffer.flip();
 
-        GlStateManager.bindTexture(textureId);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, image.getWidth(), image.getHeight(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
-        GlStateManager.bindTexture(0);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
     }
 
     public void drawString(final String text, final float x, final float y, final Color colour) {
@@ -146,8 +145,8 @@ public class FontRenderer {
     private void renderString(final String text, float x, float y, Color colour, final boolean shadow) {
         if (text.length() == 0) return;
 
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(0.5, 0.5, 0.5);
+        GL11.glPushMatrix();
+        GL11.glScaled(0.5, 0.5, 0.5);
 
         x -= MARGIN / 2f;
         y -= MARGIN / 2f;
@@ -224,10 +223,10 @@ public class FontRenderer {
             }
         }
 
-        GlStateManager.popMatrix();
+        GL11.glPopMatrix();
 
         RenderUtil.colour(Color.WHITE);
-        GlStateManager.bindTexture(0);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
     }
 
     
@@ -301,10 +300,10 @@ public class FontRenderer {
         final CharacterData charData = characterData[character];
 
         charData.bind();
-        GlStateManager.pushMatrix();
+        GL11.glPushMatrix();
 
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         GL11.glBegin(GL11.GL_QUADS);
 
@@ -319,8 +318,8 @@ public class FontRenderer {
 
         GL11.glEnd();
 
-        GlStateManager.disableBlend();
-        GlStateManager.popMatrix();
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
 
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
     }
@@ -472,5 +471,10 @@ public class FontRenderer {
 
     public float getSplitWidth(final String str, final int length) {
         return getHeight() * this.listFormattedStringToWidth(str, length).size();
+    }
+
+    private int ceilDI(final double value) {
+        final int i = (int)value;
+        return value > (double)i ? i + 1 : i;
     }
 }

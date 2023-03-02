@@ -1,4 +1,4 @@
-package pro.dd493.font;
+package pro.dd493.minecraftfontrenderer;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

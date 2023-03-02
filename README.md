@@ -1,6 +1,8 @@
 # DDMinecraftFontRenderer
 A custom Minecraft font renderer based upon an old font renderer.
 
+**This is not your best option to just import. I would suggest using [this](https://github.com/darraghd/DDMinecraftFontRenderer/docs/MCP.java) class instead for rendering.**
+
 ## Usage
 ```java
 // Creating a font manager
